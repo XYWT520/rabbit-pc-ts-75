@@ -10,5 +10,6 @@ export interface categroyItem {
   id: string,
   name: string,
   picture: string,
+  open:boolean,
   children:categroyItem[]
 }

@@ -19,7 +19,18 @@ export default defineStore('categroy', {
   actions: {
     async getAllCategroy() {
       const res = await axios.get<ApiRes<categroyItem>>('/home/category/head')
+      // 传入一个 open 
+      res.data.result.forEach(item => item.open = false)
       this.list = res.data.result
+    },
+
+    show(id: string) {
+      let item = this.list.find(item => item.id === id)
+      item!.open = true
+    },
+    hide(id: string) {
+      let item = this.list.find(item => item.id === id)
+      item!.open = false
     }
   }
 })

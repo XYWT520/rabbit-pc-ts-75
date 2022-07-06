@@ -3,19 +3,26 @@
     <li class="home">
       <RouterLink to="/">首页</RouterLink>
     </li>
-    <li v-for="item in categroy.list" :key="item.id">
-      <router-link to="/">{{item.name}}</router-link>
+    <li 
+      v-for="item in categroy.list" 
+      :key="item.id"
+      
+      @mouseenter="categroy.show(item.id)"
+      @mouseleave="categroy.hide(item.id)"
+      @click="categroy.hide(item.id)"
+      >
+      <router-link :to="item.id ? `/category/${item.id}` : '/'">{{item.name}}</router-link>
       <!-- 新增++++++++ -->
-      <div class="layer" v-if="item.children">
+      <div :class="{ open :item.open }" class="layer" v-if="item.children">
         <ul>
           <li v-for="sub in item.children" :key="sub.id">
-            <a href="#">
+            <router-link :to="`/category/sub/${sub.id}`">
               <img
                 :src="sub.picture"
                 alt=""
               />
               <p>{{sub.name}}</p>
-            </a>
+            </router-link>
           </li>
         </ul>
       </div>
@@ -58,15 +65,20 @@ categroy.getAllCategroy()
         color: @xtxColor;
         border-bottom: 1px solid @xtxColor;
       }
-      > .layer {
-        height: 132px;
-        opacity: 1;
-      }
+      // > .layer {
+      //   height: 132px;
+      //   opacity: 1;
+      // }
     }
+    
   }
 }
 // 新增样式
 .layer {
+    &.open {
+    height: 132px;
+    opacity: 1;
+  }
   width: 1240px;
   background-color: #fff;
   position: absolute;
