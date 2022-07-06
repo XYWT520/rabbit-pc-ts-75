@@ -6,7 +6,6 @@ const { categroy } = useStore()
 
 // 定义 categoryId 获取id
 const categoryId = ref('')
-console.log(categoryId.value);
 // 给鼠标注册移入事件, 获取 id
 const hMouseenter =(id:string) => {
   if(!id) return
@@ -28,6 +27,7 @@ const goods = computed(() => {
         :class="{active:categoryId === item.id}"
         v-for="item in categroy.list" 
         :key="item.id" 
+
         @mouseenter="hMouseenter(item.id)"
       >
         <RouterLink :to="`/category/${item.id}`">{{ item.name }}</RouterLink>
@@ -37,7 +37,7 @@ const goods = computed(() => {
         </template>
 
         <template v-else>
-          <Skeleton :width="60" :height="20" bg="rgba(255,255,255,0.2)" animated/>
+          <Skeleton :width="70" :height="20" bg="rgba(255,255,255,0.2)" animated/>
           <Skeleton style="margin-left: 5px;" :width="40" :height="20" bg="rgba(255,255,255,0.2)" animated/>
         </template>
       </li>

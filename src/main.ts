@@ -7,5 +7,16 @@ import '@/assets/style/common.less'
 import router from './router'
 // 导入 pinia
 import { createPinia } from 'pinia'
+// 导入组件 用来全局注册
+import MyUi from '@/components'
 const pinia = createPinia()
-createApp(App).use(router).use(pinia).mount('#app')
+// const MyUi = XtxSkeleton()
+
+// 完整写法
+const app = createApp(App)
+app.use(router)
+app.use(pinia)
+app.use(MyUi)
+app.mount("#app")
+
+// createApp(App).use(router).use(pinia).mount('#app')
