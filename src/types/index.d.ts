@@ -11,5 +11,17 @@ export interface categroyItem {
   name: string,
   picture: string,
   open:boolean,
-  children:categroyItem[]
+  // 当两个泛型相同的时候可以自己调自己
+  children:categroyItem[],
+  goods:Goods[]
+}
+
+interface Goods {
+  id: string;
+  name: string;
+  desc: string;
+  price: string;
+  picture: string;
+  discount?: any;
+  orderNum?: any;
 }
