@@ -4,6 +4,14 @@
 //   slides:{
 //     type:Array,
 //     required:true
+//   },
+//   autoplay:{
+//     type:Boolean,
+//     default:true
+//   },
+//   duration:{
+//     type:Number,
+//     default:1500
 //   }
 // })
 
@@ -11,8 +19,10 @@ import { home } from '@/types/index';
 import { onMounted, onUnmounted, ref } from 'vue';
 
 // 泛型写法
-const props = defineProps<{
+const { slides,autoplay = true,duration = 1500 } = defineProps<{
   slides:home[]
+  autoplay:boolean
+  duration:number
 }>()
 
 const active = ref(0)
@@ -20,12 +30,12 @@ const active = ref(0)
 const prev = () => {
   active.value--
   if(active.value <= 0) {
-    active.value = props.slides.length - 1
+    active.value = slides.length - 1
   }
 }
 const next = () => {
   active.value++
-  if(active.value >= props.slides.length) {
+  if(active.value >= slides.length) {
     active.value = 0
   }
 }
@@ -37,9 +47,10 @@ const stop = () => {
 }
 
 const start = () => {
+  if(!autoplay) return
   timeId = window.setInterval(() => {
     next()
-  },2000)
+  },duration)
 }
 
 // 组件挂载时开始定时器
@@ -72,18 +83,22 @@ onUnmounted(() => {
       </li>
       
     </ul>
+
+    <!-- 左右按钮 -->
     <a href="javascript:;" class="carousel-btn prev" @click="prev"
       ><i class="iconfont icon-angle-left"></i
     ></a>
     <a href="javascript:;" class="carousel-btn next" @click="next"
       ><i class="iconfont icon-angle-right"></i
     ></a>
+
+    <!-- 小圆点 -->
     <div class="carousel-indicator">
-      <span class="active"></span>
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
+      <span 
+      v-for="(item,index) in slides" :key="item.id"
+      :class="{ active : active === index}"
+      @mouseenter="active = index"
+      ></span>
     </div>
   </div>
 </template>

@@ -5,7 +5,11 @@ const path = require('path')
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [vue(),vueSetupExtend()],
+  plugins: [vue({
+    // vue 3.2.25 中要求加的属性 必须在@vitejs/plugin-vue 是2.0.0以上才可以
+    // 
+    reactivityTransform:true
+  }),vueSetupExtend()],
   // 配置路径别名
   resolve: {
     alias: {

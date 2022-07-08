@@ -33,3 +33,20 @@ export interface home {
   hrefUrl: string;
   type: string;
 }
+
+
+export interface NewItem {
+  id: string;
+  name: string;
+  desc: string;
+  price: string;
+  picture: string;
+  orderNum: number;
+}
+
+export interface hotItem {
+  id: string;
+  picture: string;
+  title: string;
+  alt: string;
+}
