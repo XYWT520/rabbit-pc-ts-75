@@ -14,7 +14,7 @@ home.getHotLists()
         <li v-for="item in home.getNewList" :key="item.id">
           <RouterLink to="/">
             <img
-              :src="item.picture"
+              v-lazy="item.picture"
               alt=""
             />
             <p class="name ellipsis">{{item.name}}</p>

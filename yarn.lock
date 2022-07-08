@@ -151,25 +151,25 @@
   "resolved" "https://registry.npmjs.org/@vue/shared/-/shared-3.2.37.tgz"
   "version" "3.2.37"
 
-"@vueuse/core@^8.8.0":
-  "integrity" "sha512-TyvcNuA6O9WGkT8oQB4ERt8aBxe/e0fUs3SnibaxtLOr4eVXq42m3sLZgwgWOrJi4s9/8pTsMaJNn/6BUefwpQ=="
-  "resolved" "https://registry.npmjs.org/@vueuse/core/-/core-8.8.0.tgz"
-  "version" "8.8.0"
+"@vueuse/core@^8.9.1":
+  "integrity" "sha512-a7goYb/gJxjXRBw4Fr/jEACiN33ghwM1ohJVu+Zwsr3lNL4qCQ1nU+ogta98lNg5hXJxWj7mYEmQDjjyWOu5nA=="
+  "resolved" "https://registry.npmjs.org/@vueuse/core/-/core-8.9.1.tgz"
+  "version" "8.9.1"
   dependencies:
     "@types/web-bluetooth" "^0.0.14"
-    "@vueuse/metadata" "8.8.0"
-    "@vueuse/shared" "8.8.0"
+    "@vueuse/metadata" "8.9.1"
+    "@vueuse/shared" "8.9.1"
     "vue-demi" "*"
 
-"@vueuse/metadata@8.8.0":
-  "integrity" "sha512-bRF+QPrw/RtP0al3nT/DtJ7CN0a6y6tEEO6hQ4CuJcGuUqd15eCOF6WKqQnC5DRaGFhsq/YwnQYsLTdJsW8f1A=="
-  "resolved" "https://registry.npmjs.org/@vueuse/metadata/-/metadata-8.8.0.tgz"
-  "version" "8.8.0"
+"@vueuse/metadata@8.9.1":
+  "integrity" "sha512-6LADOlyl3oENHa9dsoY7LXjU1Mh14DnpM6ztETI3hpm5ZffOMIG5CB2Q6aEZfIvYr1lkJVmG2L82wFKk7VRfIA=="
+  "resolved" "https://registry.npmjs.org/@vueuse/metadata/-/metadata-8.9.1.tgz"
+  "version" "8.9.1"
 
-"@vueuse/shared@8.8.0":
-  "integrity" "sha512-DNZEs5Wy8hxxjAyWni6UK4BX/OGa8R7g0GX1tid5+AvmRbUwvUXL+0lVmGEuWPSQY4OZdYef1lvuFCi4Bfd59A=="
-  "resolved" "https://registry.npmjs.org/@vueuse/shared/-/shared-8.8.0.tgz"
-  "version" "8.8.0"
+"@vueuse/shared@8.9.1":
+  "integrity" "sha512-klZfn7ijI3juqVgpfQVrrlBh4uTFajwSCWm8Cdt45Kg26b1LZ9jn9n7J6GhmkFay5016GnjjivQoekQSMeJNUg=="
+  "resolved" "https://registry.npmjs.org/@vueuse/shared/-/shared-8.9.1.tgz"
+  "version" "8.9.1"
   dependencies:
     "vue-demi" "*"
 
