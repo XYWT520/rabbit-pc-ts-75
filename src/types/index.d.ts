@@ -25,3 +25,11 @@ interface Goods {
   discount?: any;
   orderNum?: any;
 }
+
+
+export interface home {
+  id: string;
+  imgUrl: string;
+  hrefUrl: string;
+  type: string;
+}
