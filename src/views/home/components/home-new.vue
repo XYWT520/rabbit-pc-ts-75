@@ -1,13 +1,23 @@
 <script lang="ts" setup>
 import HomePanel from './home-pannel.vue'
 import useStore from '@/store';
+import { useIntersectionObserver } from '@vueuse/core';
+import { ref } from 'vue';
 const { home } = useStore()
-home.getNewLists()
-home.getHotLists()
+// home.getNewLists()
+const target = ref(null)
+// 实现数据懒加载
+// useIntersectionObserver 可以返回一个函数, 里面有一个 stop 方法
+const { stop } = useIntersectionObserver(target,([{isIntersecting}]) => {
+  if(!isIntersecting) return
+    home.getNewLists()
+    stop()
+})
+
 </script>
 <template>
   <div class="home-new">
-    <HomePanel title="新鲜好物" subtitle="新鲜出炉 品质靠谱">
+    <HomePanel ref="target" title="新鲜好物" subtitle="新鲜出炉 品质靠谱">
       <template #right><XtxMore path="/" /></template>
       <!-- 面板内容 -->
       <ul class="goods-list">

@@ -6,7 +6,7 @@ import XtxCarousel from '@/components/carousel/index.vue'
 import XtxMore from '@/components/more/index.vue'
 import appHeaderNavVue from "@/views/layout/components/app-header-nav.vue";
 import { useIntersectionObserver } from "@vueuse/core";
-
+import defaultImage from '@/assets/images/200.png'
 // 全局注册组件
 export default {
   install(app:App){
@@ -24,6 +24,10 @@ export default {
         useIntersectionObserver(el,([{isIntersecting}]) => {
           if(isIntersecting) {
             el.src = binding.value
+          }
+          // 给图片一个默认值 有一个 el.onerror 的方法
+          el.onerror = () => {
+            el.src = defaultImage
           }
         })
       }
