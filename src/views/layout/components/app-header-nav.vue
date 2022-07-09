@@ -34,7 +34,7 @@
 <script setup lang="ts">
 import useStore from '@/store';
 const { categroy } = useStore()
-categroy.getAllCategroy()
+// categroy.getAllCategroy()
 </script>
 
 

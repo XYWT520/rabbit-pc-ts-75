@@ -3,6 +3,9 @@
 import AppTopnav from './components/app-topnav.vue';
 import AppHeader from './components/app-header.vue';
 import AppHeaderSticky from './components/app-header-sticky.vue';
+import useStore from '@/store';
+const { categroy } = useStore()
+categroy.getAllCategroy()
 </script>
 <template>
   <AppTopnav />

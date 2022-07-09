@@ -3,16 +3,25 @@ import HomePanel from './home-pannel.vue'
 import useStore from '@/store';
 import { useIntersectionObserver } from '@vueuse/core';
 import { ref } from 'vue';
+import {useLazyDate} from '@/utils/hooks';
+import HomeSkeleton from './home-skeleton.vue';
 const { home } = useStore()
 // home.getNewLists()
-const target = ref(null)
 // 实现数据懒加载
 // useIntersectionObserver 可以返回一个函数, 里面有一个 stop 方法
-const { stop } = useIntersectionObserver(target,([{isIntersecting}]) => {
-  if(!isIntersecting) return
-    home.getNewLists()
-    stop()
-})
+// const { stop } = useIntersectionObserver(target,([{isIntersecting}]) => {
+//   if(!isIntersecting) return
+//     home.getNewLists()
+//     stop()
+// })
+// 原始封装
+// useLazyDate(target,() => home.getNewLists())
+
+//  进阶封装 使用引用数据类型实现封装
+// const target = useLazyDate(() => home.getNewLists())
+
+// 再次进阶 , 直接传入函数体
+ const target = useLazyDate(home.getNewLists)
 
 </script>
 <template>
@@ -20,7 +29,7 @@ const { stop } = useIntersectionObserver(target,([{isIntersecting}]) => {
     <HomePanel ref="target" title="新鲜好物" subtitle="新鲜出炉 品质靠谱">
       <template #right><XtxMore path="/" /></template>
       <!-- 面板内容 -->
-      <ul class="goods-list">
+      <ul class="goods-list" v-if="home.getNewList.length">
         <li v-for="item in home.getNewList" :key="item.id">
           <RouterLink to="/">
             <img
@@ -32,6 +41,7 @@ const { stop } = useIntersectionObserver(target,([{isIntersecting}]) => {
           </RouterLink>
         </li>
       </ul>
+      <HomeSkeleton v-else :count='4'/>
     </HomePanel>
   </div>
 </template>
@@ -60,4 +70,6 @@ const { stop } = useIntersectionObserver(target,([{isIntersecting}]) => {
     }
   }
 }
+
+
 </style>

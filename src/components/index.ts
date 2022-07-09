@@ -4,7 +4,9 @@ import { App } from "vue";
 import XtxSkeleton from '@/components/skeleton/index.vue'
 import XtxCarousel from '@/components/carousel/index.vue'
 import XtxMore from '@/components/more/index.vue'
-import appHeaderNavVue from "@/views/layout/components/app-header-nav.vue";
+import XtxBread from '@/components/bread/index.vue'
+import XtxBreadItem from '@/components/bread/item.vue'
+
 import { useIntersectionObserver } from "@vueuse/core";
 import defaultImage from '@/assets/images/200.png'
 // 全局注册组件
@@ -13,6 +15,8 @@ export default {
     app.component('XtxSkeleton',XtxSkeleton)
     app.component('XtxCarousel',XtxCarousel)
     app.component('XtxMore',XtxMore)
+    app.component('XtxBread',XtxBread)
+    app.component('XtxBreadItem',XtxBreadItem)
 
     // 全局注册组件
     // 参数1. 指令名

@@ -1,10 +1,11 @@
 <script lang="ts" setup>
 import HomeBanner from './components/home-banner.vue'
 import HomeCategory from './components/home-category.vue'
-import HomePannel from './components/home-pannel.vue';
 import HomeNew from './components/home-new.vue'
-import More from '@/components/more/index.vue';
 import HomeHot from './components/home-hot.vue';
+import HomeBrand from './components/home-brand.vue';
+import HomeProduct from './components/home-product.vue';
+import HomeSpecial from './components/home-special.vue';
 </script>
 
 <template>
@@ -23,6 +24,15 @@ import HomeHot from './components/home-hot.vue';
 
     <!-- 人气推荐 -->
     <HomeHot />
+
+    <!-- 热门品牌 -->
+    <HomeBrand />
+
+    <!-- 商品区块 -->
+    <HomeProduct />
+
+    <!-- 最新专题 -->
+    <HomeSpecial />
   </div>
 </template>
 

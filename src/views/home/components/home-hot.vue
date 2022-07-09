@@ -1,20 +1,27 @@
 <script lang="ts" setup>
 import useStore from '@/store'
+import { useLazyDate } from '@/utils/hooks';
 import { useIntersectionObserver } from '@vueuse/core';
 import { ref } from 'vue';
 import HomePanel from './home-pannel.vue'
+import HomeSkeleton from './home-skeleton.vue';
 const { home } = useStore()
 // home.getHotLists()
-const target = ref(null)
-const { stop } = useIntersectionObserver(target,([{isIntersecting}]) => {
-  if(!isIntersecting) return
-  home.getHotLists()
-  stop()
-})
+// const target = ref(null)
+// const { stop } = useIntersectionObserver(target,([{isIntersecting}]) => {
+//   if(!isIntersecting) return
+//   home.getHotLists()
+//   stop()
+// })
+
+// const target = useLazyDate(() => home.getHotLists())
+
+const target = useLazyDate(home.getHotLists)
+
 </script>
 <template>
   <HomePanel ref="target" title="人气推荐" subtitle="人气爆款 不容错过">
-    <ul ref="pannel" class="goods-list">
+    <ul ref="pannel" class="goods-list" v-if="home.HotList.length" >
       <li v-for="item in home.HotList" :key="item.id">
         <RouterLink to="/">
           <img v-lazy="item.picture" alt="" />
@@ -23,6 +30,7 @@ const { stop } = useIntersectionObserver(target,([{isIntersecting}]) => {
         </RouterLink>
       </li>
     </ul>
+    <HomeSkeleton :count="4" v-else/>
   </HomePanel>
 </template>
 

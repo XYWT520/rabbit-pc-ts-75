@@ -50,3 +50,59 @@ export interface hotItem {
   title: string;
   alt: string;
 }
+
+
+export interface brandItem {
+  id: string;
+  name: string;
+  nameEn: string;
+  logo: string;
+  picture: string;
+  type?: any;
+  desc: string;
+  place: string;
+}
+
+
+export interface goodsItem {
+  id: string;
+  name: string;
+  picture: string;
+  saleInfo: string;
+  children: Child[];
+  goods: Good[];
+}
+
+export interface goods {
+  id: string;
+  name: string;
+  desc: string;
+  price: string;
+  picture: string;
+  discount?: any;
+  orderNum: number;
+}
+
+export interface Child {
+  id: string;
+  name: string;
+  layer: number;
+  parent?: any;
+}
+
+export interface specialItem {
+  creator: string;
+  isDelete: number;
+  createTime: string;
+  updateTime: string;
+  id: string;
+  classificationId: string;
+  title: string;
+  summary: string;
+  lowestPrice: number;
+  cover: string;
+  detailsUrl: string;
+  collectNum: number;
+  viewNum: number;
+  replyNum: number;
+}
