@@ -3,7 +3,7 @@ import { defineStore } from 'pinia'
 // 导入 axios
 import axios from '@/utils/request'
 // 导入泛型声明文件
-import { ApiRes, categroyItem } from '@/types'
+import { ApiRes, categroyItem,TopCategory } from '@/types'
 import { topCategory } from '../constants'
 
 const defaultCategory = topCategory.map(item => {
@@ -13,7 +13,8 @@ const defaultCategory = topCategory.map(item => {
 export default defineStore('categroy', {
   state: () => {
     return {
-      list: defaultCategory as categroyItem[]
+      list: defaultCategory as categroyItem[],
+      topCategoryList:{} as TopCategory
     }
   },
   actions: {
@@ -23,7 +24,6 @@ export default defineStore('categroy', {
       res.data.result.forEach(item => item.open = false)
       this.list = res.data.result
     },
-
     show(id: string) {
       let item = this.list.find(item => item.id === id)
       item!.open = true
@@ -31,6 +31,13 @@ export default defineStore('categroy', {
     hide(id: string) {
       let item = this.list.find(item => item.id === id)
       item!.open = false
+    },
+    async getTopCategory(id:string) {
+      const res = await axios.get('/category',{
+        params:{id}
+      })
+      // console.log(res);
+      this.topCategoryList = res.data.result
     }
   }
 })

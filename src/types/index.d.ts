@@ -106,3 +106,11 @@ export interface specialItem {
   viewNum: number;
   replyNum: number;
 }
+
+// 顶级分类类型
+export type TopCategory = {
+  id: string
+  name: string
+  picture: string
+  children: CategoryItem[]
+}
