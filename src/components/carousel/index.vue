@@ -66,7 +66,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="xtx-carousel" @mouseenter="stop" @mouseleave="start">
+  <div class="xtx-carousel" @mousemove="stop" @mouseleave="start">
     <ul class="carousel-body">
       <li 
       class="carousel-item" 

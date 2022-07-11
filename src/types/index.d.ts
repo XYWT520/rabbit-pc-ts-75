@@ -2,7 +2,7 @@
 export interface ApiRes<T> {
   code: string,
   mes: string,
-  result: T[],
+  result: T,
 }
 
 // 单个分类的类型
@@ -16,14 +16,14 @@ export interface categroyItem {
   goods:Goods[]
 }
 
-interface Goods {
+export interface Goods {
   id: string;
   name: string;
   desc: string;
   price: string;
   picture: string;
-  discount?: any;
-  orderNum?: any;
+  discount?: number;
+  orderNum?: number;
 }
 
 
@@ -112,5 +112,34 @@ export type TopCategory = {
   id: string
   name: string
   picture: string
-  children: CategoryItem[]
+  children: categroyItem[]
+}
+
+export type SaleProperty = {
+  id: string
+  name: string
+  properties: {
+    id: string
+    name: string
+  }[]
+}
+
+export type SubCategory = {
+  id: string
+  name: string
+  picture?: any
+  parentId: string
+  parentName: string
+  brands: {
+    id: string
+    name: string
+    nameEn: string
+    logo: string
+    picture: string
+    type?: any
+    desc: string
+    place: string
+  }[]
+  saleProperties: SaleProperty[]
+  goods: GoodItem[]
 }

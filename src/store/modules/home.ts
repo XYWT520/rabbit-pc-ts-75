@@ -18,32 +18,32 @@ export default defineStore('home', {
   },
   actions: {
     async getBannerList() {
-      const res = await axios.get<ApiRes<home>>('/home/banner')
+      const res = await axios.get<ApiRes<home[]>>('/home/banner')
       // console.log(res);
       this.bannerList = res.data.result
     },
     async getNewLists() {
-      const res = await axios.get<ApiRes<NewItem>>('/home/new')
+      const res = await axios.get<ApiRes<NewItem[]>>('/home/new')
       // console.log(res);
       this.getNewList = res.data.result
     },
     async getHotLists() {
-      const res = await axios.get<ApiRes<hotItem>>('/home/hot')
+      const res = await axios.get<ApiRes<hotItem[]>>('/home/hot')
       // console.log(res);
       this.HotList = res.data.result
     },
     async getBrandList() {
-      const res = await axios.get<ApiRes<brandItem>>('home/brand')
+      const res = await axios.get<ApiRes<brandItem[]>>('home/brand')
       // console.log(res);
       this.brandList = res.data.result
     },
     async getGoodsList() {
-      const res = await axios.get<ApiRes<goodsItem>>('home/goods')
+      const res = await axios.get<ApiRes<goodsItem[]>>('home/goods')
       // console.log(res);
       this.goodsList = res.data.result
     },
     async getSpecialList() {
-      const res = await axios.get<ApiRes<specialItem>>('home/special')
+      const res = await axios.get<ApiRes<specialItem[]>>('home/special')
       // console.log(res);3
       this.specialList = res.data.result
     }
