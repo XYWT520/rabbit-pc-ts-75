@@ -1,22 +1,36 @@
 <script setup lang="ts" name="GoodsSku">
-import { GoodsInfo } from '@/types';
+import { GoodsInfo, valuesItem ,specsItem } from '@/types';
 
 defineProps<{
   goods: GoodsInfo
 }>()
+
+const changeSelected = (sub:valuesItem,item:specsItem) => {
+  // 排他思想 
+  item.values.forEach(i => i.selected = false)
+  sub.selected = !sub.selected
+}
+
 </script>
 <template>
   <div class="goods-sku">
-    <dl v-for="item in goods.specs" :key="item.id">
+    <dl v-for="item in goods.specs" :key="item.name">
       <dt>{{ item.name }}</dt>
       <dd>
         <template v-for="sub in item.values" :key="sub.name">
-          <img v-if="sub.picture" class="selected" :src="sub.picture" :alt="sub.name" :title="sub.name" />
-          <span>{{sub.name}}</span>
+          <img 
+          v-if="sub.picture" 
+          :class="{ selected:sub.selected}" 
+          :src="sub.picture" 
+          :title="sub.name" 
+          @click="changeSelected(sub,item)"
+          />
+          <span v-else :class="{ selected:sub.selected}" @click="changeSelected(sub,item)">{{sub.name}}</span>
         </template>
       </dd>
     </dl>
   </div>
+
 </template>
 
 <style scoped lang="less">

@@ -175,9 +175,12 @@ export type GoodsInfo = {
 export type specsItem = {
   name:string
   id:string
-  values:{
-    desc:string
-    name:string
-    picture:string
-  }[]
+  values:valuesItem[]
+}
+
+export type valuesItem = {
+  desc:string
+  name:string
+  picture:string
+  selected:boolean
 }
