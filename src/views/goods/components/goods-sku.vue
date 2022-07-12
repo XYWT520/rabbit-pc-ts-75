@@ -1,7 +1,8 @@
 <script setup lang="ts" name="GoodsSku">
 import { GoodsInfo, valuesItem ,specsItem } from '@/types';
+import bwPowerSet from '@/utils/bwPowerSet'
 
-defineProps<{
+const props = defineProps<{
   goods: GoodsInfo
 }>()
 
@@ -10,6 +11,36 @@ const changeSelected = (sub:valuesItem,item:specsItem) => {
   item.values.forEach(i => i.selected = false)
   sub.selected = !sub.selected
 }
+ 
+ // 测试 powrset 算法
+//  const result = bwPowerSet(['冷雪瞳','舒月舞'])
+//  console.log(result);
+console.log(props.goods.skus)
+function getParhMap () {
+  // 筛选无效的(没有库存的)
+  const skus = props.goods.skus.filter(item => item.inventory > 0 )
+  // console.log(skus);
+  // 创建路劲字典
+  const pathMap:any = {}
+  skus.forEach(item => {
+    const arr = item.specs.map(v => v.valueName)
+    // console.log(arr);
+    const result = bwPowerSet(arr)
+    // console.log(result);
+    result.forEach(arrItem => {
+      const key = arrItem.join('★')
+      if(key in pathMap) {
+        pathMap[key].push(item.id)
+      } else {
+        pathMap[key] = [item.id]
+      }
+    })
+  })
+  return pathMap
+}
+
+const pathMap = getParhMap()
+console.log(pathMap);
 
 </script>
 <template>
