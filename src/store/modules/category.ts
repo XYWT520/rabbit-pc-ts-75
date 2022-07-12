@@ -44,8 +44,11 @@ export default defineStore('categroy', {
       const res = await axios.get<ApiRes<SubCategory>>('/category/sub/filter',{params:{id}})
       this.subCategory = res.data.result
     },
-    async resetCategory() {
+    resetCategory() {
       this.subCategory = {} as SubCategory
+    },
+    resetTopcategory() {
+      this.topCategoryList = {} as TopCategory
     }
   }
 })
