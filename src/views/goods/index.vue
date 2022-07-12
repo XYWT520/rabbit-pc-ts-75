@@ -1,12 +1,13 @@
 <script lang="ts" setup>
 import useStore from '@/store';
-import { watchEffect } from 'vue';
+import { ref, watchEffect } from 'vue';
 import { useRoute } from 'vue-router'
 import GoodsImage from './components/goods-image.vue'
 import GoodsSales from './components/goods-sales.vue';
 import GoodsName from './components/goods-name.vue';
 const route = useRoute()
 const { goods } = useStore()
+
 
 watchEffect(() => {
   if(route.fullPath !== '/goods/' + route.params.id) return  

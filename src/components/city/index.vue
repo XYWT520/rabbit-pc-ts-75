@@ -3,11 +3,45 @@ import { ref, watchEffect } from 'vue';
 import axios from 'axios';
 import { onClickOutside } from '@vueuse/core';
 
+// 选择的城市结果类型
+export type CityResult = {
+  provinceCode: string
+  provinceName: string
+  cityCode: string
+  cityName: string
+  countyCode: string
+  countyName: string
+}
+type cityItem = {
+  code: string,
+  level: number,
+  name: string,
+  areaList: cityItem[]
+}
+
+defineProps<{
+  address:string
+}>()
+
+const emit = defineEmits<{
+  (e:'changeCity',city:CityResult): void
+}>()
 const cityList = ref<cityItem[]>([])
 const cacheList = ref<cityItem[]>([])
 const active = ref(false)
 const target = ref(null)
 
+// 定义一个新的响应式数据
+const changeResult = ref({
+  provinceCode: '',
+  provinceName: '',
+  cityCode: '',
+  cityName: '',
+  countyCode: '',
+  countyName: ''
+})
+
+// 请求
 async function getCityList() {
   const res = await axios.get<cityItem[]>('https://yjy-oss-files.oss-cn-zhangjiakou.aliyuncs.com/tuxian/area.json')
   // console.log(res);
@@ -17,6 +51,7 @@ async function getCityList() {
 }
 getCityList()
 
+// vueuse 的新方法 可以判断是否点击你选择的元素的外面
 onClickOutside(target, () => {
   // console.log('点外面了');
   active.value = false
@@ -24,6 +59,21 @@ onClickOutside(target, () => {
 
 // 点击事件
 const seletCity = (item:cityItem) => {
+  // 根据后台的数据 leave 判断选择的是省市县
+  if(item.level === 0 ) {
+    changeResult.value.provinceName = item.name
+    changeResult.value.provinceCode = item.code
+  }
+  if(item.level === 1 ) {
+    changeResult.value.cityName = item.name
+    changeResult.value.cityCode = item.code
+  }
+  if(item.level === 2 ) {
+    changeResult.value.countyName = item.name
+    changeResult.value.countyCode = item.code
+    // 通知父组件, 数据携带过去
+    emit('changeCity',changeResult.value)
+  }
   if(!item.areaList) return active.value = false
   cityList.value = item.areaList
 }
@@ -33,18 +83,12 @@ watchEffect(() => {
   if(!active.value) cityList.value = cacheList.value
 })
 
-type cityItem = {
-  code: string,
-  level: number,
-  name: string,
-  areaList: cityItem[]
-}
-
 </script>
 <template>
   <div class="xtx-city" ref="target">
     <div class="select" @click="active = !active" :class="{ active }">
-      <span class="placeholder">请选择配送地址</span>
+      <span v-if="address" class="placeholder">{{address}}</span>
+      <span v-else class="placeholder">请选择配送地址</span>
       <span class="value"></span>
       <i class="iconfont icon-angle-down"></i>
     </div>
