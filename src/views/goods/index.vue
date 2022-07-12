@@ -10,7 +10,7 @@ const { goods } = useStore()
 
 watchEffect(() => {
   if(route.fullPath !== '/goods/' + route.params.id) return  
-
+  goods.resetGoodsInfo()
   goods.getGoodsList(route.params.id as string)
 })
 </script>

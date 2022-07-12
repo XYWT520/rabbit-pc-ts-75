@@ -75,6 +75,7 @@ home.getBannerList()
 watchEffect(() => {
   // if(!route.params.id) return
   if(route.fullPath !== '/category/' + route.params.id) return
+  categroy.resetTopcategory()
   categroy.getTopCategory(route.params.id as string)
 })
 
