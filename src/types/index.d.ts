@@ -169,4 +169,15 @@ export type GoodsInfo = {
     id: string
     name: string
   }[]
+  specs:specsItem[]
+}
+
+export type specsItem = {
+  name:string
+  id:string
+  values:{
+    desc:string
+    name:string
+    picture:string
+  }[]
 }
