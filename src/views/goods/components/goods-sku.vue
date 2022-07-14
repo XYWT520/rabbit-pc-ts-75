@@ -1,7 +1,8 @@
 <script setup lang="ts" name="GoodsSku">
 import { GoodsInfo, valuesItem ,specsItem } from '@/types';
 import bwPowerSet from '@/utils/bwPowerSet'
-import { arrayBuffer } from 'stream/consumers';
+
+const SEPARATOR = '★'
 
 const props = defineProps<{
   goods: GoodsInfo
@@ -17,6 +18,7 @@ const changeSelected = (sub:valuesItem,item:specsItem) => {
   // 更新组合规则的禁用状态
   // 该调用必须在排他结束在执行
   getSelectedSpec()
+  updateDisabledStatus()
 }
  
  // 测试 powrset 算法
@@ -35,7 +37,7 @@ function getParhMap () {
     const result = bwPowerSet(arr)
     // console.log(result);
     result.forEach(arrItem => {
-      const key = arrItem.join('★')
+      const key = arrItem.join(SEPARATOR)
       if(key in pathMap) {
         pathMap[key].push(item.id)
       } else {
@@ -50,7 +52,7 @@ function getParhMap () {
 function updateDisabledStatus() {
   // 该方法的作用: 循环所有 specs 去路劲字典里找,是否存在
   // 如果存在就不禁用, 不存在就禁用
-  props.goods.specs.forEach(item => {
+  props.goods.specs.forEach((item,index) => {
     item.values.forEach(sub => {
       // 去对象里查找这个属性, 该怎么做? 可以使用 key in obj 返回一个布尔值      
       // if(sub.name in pathMap) {
@@ -58,7 +60,16 @@ function updateDisabledStatus() {
       // } else {
       //   sub.disabled = true
       // }
-      sub.disabled = !(sub.name in pathMap)
+      // 先获取所有选中该的商品规格
+      // 返回的数据是['黑色','','']
+      const selectedArr = getSelectedSpec()
+      // console.log(selectedArr);
+      selectedArr[index] = sub.name
+      // console.log(selectedArr,sub.name,index)
+      console.log(selectedArr.filter(v => v).join(SEPARATOR));
+      const key = selectedArr.filter(v => v).join(SEPARATOR)
+      // sub.disabled = !(sub.name in pathMap)
+      sub.disabled = !(key in pathMap)
     })
   })
 }
@@ -70,7 +81,7 @@ function getSelectedSpec() {
   props.goods.specs.forEach(item => {
     // 查找选中的状态
     const result = item.values.find(v => v.selected)
-    console.log(result?.name);
+    // console.log(result?.name);
     arr.push(result?.name || '')
     // item.values.forEach(sub => {
       // console.log(sub.name,sub.selected);
