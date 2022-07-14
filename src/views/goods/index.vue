@@ -25,6 +25,7 @@ const hChangeSku = (skuId:string) => {
   goods.info.price = sku.price
   goods.info.oldPrice = sku.oldPrice
 }
+const count = ref(1)
 </script>
 
 <template>
@@ -46,6 +47,7 @@ const hChangeSku = (skuId:string) => {
         <div class="spec">
           <GoodsName :goods="goods.info"/>
           <GoodsSku @change-sku="hChangeSku" skuId="1369155864430120962" :goods="goods.info" />
+          <XtxNumbox v-model="count" :min="1" :max="10" :showlabel='true'/>
         </div>
       </div>
       <!-- 商品详情 -->
