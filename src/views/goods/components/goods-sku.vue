@@ -5,7 +5,13 @@ import bwPowerSet from '@/utils/bwPowerSet'
 const SEPARATOR = '★'
 
 const props = defineProps<{
-  goods: GoodsInfo
+  goods: GoodsInfo,
+  skuId:string
+}>()
+
+// 子组件向父组件传值
+const emit = defineEmits<{
+  (e:'changeSku',skuId:string) :void
 }>()
 
 const changeSelected = (sub:valuesItem,item:specsItem) => {
@@ -19,6 +25,21 @@ const changeSelected = (sub:valuesItem,item:specsItem) => {
   // 该调用必须在排他结束在执行
   getSelectedSpec()
   updateDisabledStatus()
+
+  // 获取当前选中的规格
+  // 判断是否选中了所有规格, 如果是选中了就子传父 将 sukid 传递过去
+  const result = getSelectedSpec()
+  // console.log(result);
+  // if(!result) return
+  // 当全部选中时, 就将 sukId 传递给父组件
+  const isAll = result.every(item => item)
+  // console.log(isAll);
+  // if(!isAll) return
+  const key = result.join(SEPARATOR)
+  // console.log(key);
+  const val = pathMap[key]
+  // console.log(val[0]);
+  emit('changeSku',val[0])
 }
  
  // 测试 powrset 算法
@@ -48,7 +69,7 @@ function getParhMap () {
   return pathMap
 }
 
-// // 修改禁用状态 页面加载时就对所有元素进行修改
+// 修改禁用状态 页面加载时就对所有元素进行修改
 function updateDisabledStatus() {
   // 该方法的作用: 循环所有 specs 去路劲字典里找,是否存在
   // 如果存在就不禁用, 不存在就禁用
@@ -66,7 +87,7 @@ function updateDisabledStatus() {
       // console.log(selectedArr);
       selectedArr[index] = sub.name
       // console.log(selectedArr,sub.name,index)
-      console.log(selectedArr.filter(v => v).join(SEPARATOR));
+      // console.log(selectedArr.filter(v => v).join(SEPARATOR));
       const key = selectedArr.filter(v => v).join(SEPARATOR)
       // sub.disabled = !(sub.name in pathMap)
       sub.disabled = !(key in pathMap)
@@ -97,22 +118,32 @@ function getSelectedSpec() {
   return arr
 }
 
-// function updateDisabledStatus() {
-//   props.goods.specs.forEach(item => {
-//     item.values.forEach(sub => {
-//       // if(sub.name in pathMap) {
-//       //   sub.disabled = false
-//       // } else {
-//       //   sub.disabled = true
-//       // }
-//       sub.disabled = !(sub.name in pathMap)
-//     })
-//   })
-// }
+// 初始化勾选状态
+function initSpecsSelected() {
+  // 如果没有 props.skuid 就不执行
+  if(!props.skuId) return
+  // 通过 skuid 找到当前的 sku 勾选状态
+  const result = props.goods.skus.find(item => item.id === props.skuId)
+  // console.log(result);
+  if(!result) return
+  const selecrArr = result.specs.map(item => item.valueName)
+  // console.log(selecrArr);
+  props.goods.specs.forEach(item => {
+    item.values.forEach(sub => {
+      if(selecrArr.includes(sub.name)) {
+        sub.selected = true
+      }
+    })
+  })
+
+}
 
 const pathMap = getParhMap()
+
+initSpecsSelected()
+
 updateDisabledStatus()
-console.log(pathMap);
+// console.log(pathMap);
 
 </script>
 <template>

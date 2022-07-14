@@ -15,6 +15,16 @@ watchEffect(() => {
   goods.resetGoodsInfo()
   goods.getGoodsList(route.params.id as string)
 })
+
+const hChangeSku = (skuId:string) => {
+  // console.log(skuId);
+  // 父组件获取到了子组件传递过来的id, 通过 id 查找出整个对象
+  const sku = goods.info.skus.find(item => item.id === skuId)
+  // console.log(sku);
+  if(!sku) return
+  goods.info.price = sku.price
+  goods.info.oldPrice = sku.oldPrice
+}
 </script>
 
 <template>
@@ -35,7 +45,7 @@ watchEffect(() => {
         </div>
         <div class="spec">
           <GoodsName :goods="goods.info"/>
-          <GoodsSku :goods="goods.info" />
+          <GoodsSku @change-sku="hChangeSku" skuId="1369155864430120962" :goods="goods.info" />
         </div>
       </div>
       <!-- 商品详情 -->
