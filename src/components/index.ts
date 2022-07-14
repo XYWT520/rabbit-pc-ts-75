@@ -8,6 +8,7 @@ import XtxBread from '@/components/bread/index.vue'
 import XtxBreadItem from '@/components/bread/item.vue'
 import XtxCity from '@/components/city/index.vue'
 import XtxNumbox from '@/components/Numbox/index.vue'
+import XtxButton from '@/components/button/index.vue'
 
 import { useIntersectionObserver } from "@vueuse/core";
 import defaultImage from '@/assets/images/200.png'
@@ -21,6 +22,7 @@ export default {
     app.component('XtxBreadItem',XtxBreadItem)
     app.component('XtxCity',XtxCity)
     app.component('XtxNumbox',XtxNumbox)
+    app.component('XtxButton',XtxButton)
 
     // 全局注册组件
     // 参数1. 指令名
