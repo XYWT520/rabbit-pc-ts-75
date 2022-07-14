@@ -1,6 +1,7 @@
 <script setup lang="ts" name="GoodsSku">
 import { GoodsInfo, valuesItem ,specsItem } from '@/types';
 import bwPowerSet from '@/utils/bwPowerSet'
+import { arrayBuffer } from 'stream/consumers';
 
 const props = defineProps<{
   goods: GoodsInfo
@@ -12,6 +13,10 @@ const changeSelected = (sub:valuesItem,item:specsItem) => {
   // 排他思想 
   item.values.filter(item => item.name !== sub.name).forEach(i => i.selected = false)
   sub.selected = !sub.selected
+  // 调用 getSelectedSpec
+  // 更新组合规则的禁用状态
+  // 该调用必须在排他结束在执行
+  getSelectedSpec()
 }
  
  // 测试 powrset 算法
@@ -56,6 +61,29 @@ function updateDisabledStatus() {
       sub.disabled = !(sub.name in pathMap)
     })
   })
+}
+
+// 获取被选中的规则
+function getSelectedSpec() {
+  // 希望获取每个规则被选中的值: ['','','']
+  const arr:string[] = []
+  props.goods.specs.forEach(item => {
+    // 查找选中的状态
+    const result = item.values.find(v => v.selected)
+    console.log(result?.name);
+    arr.push(result?.name || '')
+    // item.values.forEach(sub => {
+      // console.log(sub.name,sub.selected);
+      // console.log(arr);
+      // 判断有没有选中,选中了就添加进数据 没有选中就添加一个字符串
+      // if(sub.selected) {
+      //   arr.push(sub.name)
+      // } else {
+      //   arr.push('')
+      // }
+    // })
+  })
+  return arr
 }
 
 // function updateDisabledStatus() {
