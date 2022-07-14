@@ -184,6 +184,7 @@ export type valuesItem = {
   name:string
   picture:string
   selected:boolean
+  disabled:boolean
 }
 
 export type SkuItem = {

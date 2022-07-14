@@ -7,15 +7,17 @@ const props = defineProps<{
 }>()
 
 const changeSelected = (sub:valuesItem,item:specsItem) => {
+  // 如果禁用了就不要选中
+  if(sub.disabled) return
   // 排他思想 
-  item.values.forEach(i => i.selected = false)
+  item.values.filter(item => item.name !== sub.name).forEach(i => i.selected = false)
   sub.selected = !sub.selected
 }
  
  // 测试 powrset 算法
 //  const result = bwPowerSet(['冷雪瞳','舒月舞'])
 //  console.log(result);
-console.log(props.goods.skus)
+// console.log(props.goods.skus)
 function getParhMap () {
   // 筛选无效的(没有库存的)
   const skus = props.goods.skus.filter(item => item.inventory > 0 )
@@ -39,7 +41,38 @@ function getParhMap () {
   return pathMap
 }
 
+// // 修改禁用状态 页面加载时就对所有元素进行修改
+function updateDisabledStatus() {
+  // 该方法的作用: 循环所有 specs 去路劲字典里找,是否存在
+  // 如果存在就不禁用, 不存在就禁用
+  props.goods.specs.forEach(item => {
+    item.values.forEach(sub => {
+      // 去对象里查找这个属性, 该怎么做? 可以使用 key in obj 返回一个布尔值      
+      // if(sub.name in pathMap) {
+      //   sub.disabled = false
+      // } else {
+      //   sub.disabled = true
+      // }
+      sub.disabled = !(sub.name in pathMap)
+    })
+  })
+}
+
+// function updateDisabledStatus() {
+//   props.goods.specs.forEach(item => {
+//     item.values.forEach(sub => {
+//       // if(sub.name in pathMap) {
+//       //   sub.disabled = false
+//       // } else {
+//       //   sub.disabled = true
+//       // }
+//       sub.disabled = !(sub.name in pathMap)
+//     })
+//   })
+// }
+
 const pathMap = getParhMap()
+updateDisabledStatus()
 console.log(pathMap);
 
 </script>
@@ -51,12 +84,12 @@ console.log(pathMap);
         <template v-for="sub in item.values" :key="sub.name">
           <img 
           v-if="sub.picture" 
-          :class="{ selected:sub.selected}" 
+          :class="{ selected:sub.selected,disabled:sub.disabled}" 
           :src="sub.picture" 
           :title="sub.name" 
           @click="changeSelected(sub,item)"
           />
-          <span v-else :class="{ selected:sub.selected}" @click="changeSelected(sub,item)">{{sub.name}}</span>
+          <span v-else :class="{ selected:sub.selected, disabled:sub.disabled }" @click="changeSelected(sub,item)">{{sub.name}}</span>
         </template>
       </dd>
     </dl>
