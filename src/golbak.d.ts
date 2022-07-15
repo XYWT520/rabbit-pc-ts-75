@@ -7,6 +7,7 @@ import XtxBreadItem from '@/components/bread/item.vue'
 import XtxCity from '@/components/city/index.vue'
 import XtxNumbox from '@/components/Numbox/index.vue'
 import XtxButton from '@/components/button/index.vue'
+import XtxCheck from '@/components/checkbox/index.vue'
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
@@ -17,5 +18,6 @@ declare module '@vue/runtime-core' {
     XtxBreadItem: typeof XtxBreadItem
     XtxCity: typeof XtxCity
     XtxButton: typeof XtxButton
+    XtxCheck: typeof XtxCheck
   }
 }
