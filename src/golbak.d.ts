@@ -8,6 +8,8 @@ import XtxCity from '@/components/city/index.vue'
 import XtxNumbox from '@/components/Numbox/index.vue'
 import XtxButton from '@/components/button/index.vue'
 import XtxCheck from '@/components/checkbox/index.vue'
+import XtxMessage from '@/components/message/message.vue'
+
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
@@ -19,5 +21,6 @@ declare module '@vue/runtime-core' {
     XtxCity: typeof XtxCity
     XtxButton: typeof XtxButton
     XtxCheck: typeof XtxCheck
+    XtxMessage: typeof XtxMessage
   }
 }

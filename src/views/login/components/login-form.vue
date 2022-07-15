@@ -1,8 +1,12 @@
 <script lang="ts" setup name="LoginForm">
 import { ref } from 'vue';
-
+import { Message } from '@/components/message';
 const active = ref<'account' | 'qrcode'>('account')
 const isAgree = ref(false)
+const login = () => {
+  Message({type:'success',text:'冷雪瞳'})
+}
+
 </script>
 <template>
   <div class="account-box">
@@ -55,7 +59,8 @@ const isAgree = ref(false)
           <a href="javascript:;">《服务条款》</a>
         </div>
       </div>
-      <a href="javascript:;" class="btn">登录</a>
+      
+      <a @click="login" href="javascript:;" class="btn">登录</a>
     </div>
     <div class="action">
       <img

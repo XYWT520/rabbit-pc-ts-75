@@ -10,6 +10,7 @@ import XtxCity from '@/components/city/index.vue'
 import XtxNumbox from '@/components/Numbox/index.vue'
 import XtxButton from '@/components/button/index.vue'
 import XtxCheck from '@/components/checkbox/index.vue'
+import XtxMessage from '@/components/message/message.vue'
 
 import { useIntersectionObserver } from "@vueuse/core";
 import defaultImage from '@/assets/images/200.png'
@@ -25,6 +26,7 @@ export default {
     app.component('XtxNumbox',XtxNumbox)
     app.component('XtxButton',XtxButton)
     app.component('XtxCheck',XtxCheck)
+    app.component('XtxMessage',XtxMessage)
 
     // 全局注册组件
     // 参数1. 指令名
