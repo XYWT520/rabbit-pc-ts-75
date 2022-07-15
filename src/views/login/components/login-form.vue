@@ -1,11 +1,46 @@
 <script lang="ts" setup name="LoginForm">
 import { ref } from 'vue';
 import { Message } from '@/components/message';
+import useStore from '@/store'
+import { useRouter } from 'vue-router';
+const router = useRouter()
+const { user } = useStore()
 const active = ref<'account' | 'qrcode'>('account')
 const isAgree = ref(false)
 const login = () => {
-  Message({type:'success',text:'冷雪瞳'})
+  // 表单校验
+  if (form.value.account === '') {
+    Message({ type: 'error', text: '用户名或手机号不能为空' })
+    return
+  }
+  if (form.value.password === '') {
+    Message({ type: 'error', text: '密码不能为空' })
+    return
+  }
+  if (!form.value.isAgree) {
+    Message({ type: 'error', text: '请同意许可' })
+    return
+  }
+  console.log('通过校验，可以发送请求')
+
+  try {
+    // 发送请求
+    user.login(form.value)
+    // 消息提示
+    Message.success('登录成功')
+    // 跳转到首页
+    router.push('/')
+  } catch (e) {
+    console.log(e);
+  }
+
 }
+
+const form = ref({
+  account: '',
+  password: '',
+  isAgree: false,
+})
 
 </script>
 <template>
@@ -23,14 +58,14 @@ const login = () => {
         <div class="form-item">
           <div class="input">
             <i class="iconfont icon-user"></i>
-            <input type="text" placeholder="请输入用户名或手机号" />
+            <input v-model="form.account" type="text" placeholder="请输入用户名或手机号" />
           </div>
           <!-- <div class="error"><i class="iconfont icon-warning" />请输入手机号</div> -->
         </div>
         <div class="form-item">
           <div class="input">
             <i class="iconfont icon-lock"></i>
-            <input type="password" placeholder="请输入密码" />
+            <input v-model="form.password" type="password" placeholder="请输入密码" />
           </div>
         </div>
       </template>
@@ -53,20 +88,17 @@ const login = () => {
         <div class="agree">
           <!-- <XtxCheck :label="'我同意'" v-model="isAgree" /> -->
           <!-- 使用插槽 -->
-          <XtxCheck v-model="isAgree">我同意</XtxCheck>
+          <XtxCheck v-model="form.isAgree">我同意</XtxCheck>
           <a href="javascript:;">《隐私条款》</a>
           <span>和</span>
           <a href="javascript:;">《服务条款》</a>
         </div>
       </div>
-      
+
       <a @click="login" href="javascript:;" class="btn">登录</a>
     </div>
     <div class="action">
-      <img
-        src="https://qzonestyle.gtimg.cn/qzone/vas/opensns/res/img/Connect_logo_7.png"
-        alt=""
-      />
+      <img src="https://qzonestyle.gtimg.cn/qzone/vas/opensns/res/img/Connect_logo_7.png" alt="" />
       <div class="url">
         <a href="javascript:;">忘记密码</a>
         <a href="javascript:;">免费注册</a>
@@ -81,21 +113,27 @@ const login = () => {
   .toggle {
     padding: 15px 40px;
     text-align: right;
+
     a {
       color: @xtxColor;
+
       i {
         font-size: 14px;
       }
     }
   }
+
   .form {
     padding: 0 40px;
+
     &-item {
       margin-bottom: 28px;
+
       .input {
         position: relative;
         height: 36px;
-        > i {
+
+        >i {
           width: 34px;
           height: 34px;
           background: #cfcdcd;
@@ -107,20 +145,24 @@ const login = () => {
           line-height: 34px;
           font-size: 18px;
         }
+
         input {
           padding-left: 44px;
           border: 1px solid #cfcdcd;
           height: 36px;
           line-height: 36px;
           width: 100%;
+
           &.error {
             border-color: @priceColor;
           }
+
           &.active,
           &:focus {
             border-color: @xtxColor;
           }
         }
+
         .code {
           position: absolute;
           right: 1px;
@@ -135,22 +177,26 @@ const login = () => {
           cursor: pointer;
         }
       }
-      > .error {
+
+      >.error {
         position: absolute;
         font-size: 12px;
         line-height: 28px;
         color: @priceColor;
+
         i {
           font-size: 14px;
           margin-right: 2px;
         }
       }
     }
+
     .agree {
       a {
         color: #069;
       }
     }
+
     .btn {
       display: block;
       width: 100%;
@@ -159,19 +205,23 @@ const login = () => {
       text-align: center;
       line-height: 40px;
       background: @xtxColor;
+
       &.disabled {
         background: #cfcdcd;
       }
     }
   }
+
   .action {
     padding: 20px 40px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+
     img {
       cursor: pointer;
     }
+
     .url {
       a {
         color: #999;
