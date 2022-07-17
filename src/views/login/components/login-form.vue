@@ -4,7 +4,7 @@ import { Message } from '@/components/message';
 import useStore from '@/store'
 import { useRouter } from 'vue-router';
 import { useField, useForm } from 'vee-validate'
-
+import { useIntervalFn } from '@vueuse/core'; 
 const router = useRouter()
 const { user } = useStore()
 const active = ref<'account' | 'qrcode'>('account')
@@ -75,26 +75,54 @@ const { resetForm, validate } = useForm({
 })
 
 
-    
-  
-
-
-
-
 // 会返回一个对象, 一般直接进行解构
 // 将其中的 value 和 errorMessage 提取出来
 // value 属性是一个响应式的额值, 用于给表单元素进行双向绑定
 const { value: account, errorMessage: accountMessage } = useField<string>('account')
 const { value: password, errorMessage: passwordMessage } = useField<string>('password')
 const { value: isAgree, errorMessage: isAgreeMessage } = useField<boolean>('isAgree')
-const { value: mobile, errorMessage: mobileMessage } = useField<boolean>('mobile')
+const { value: mobile, errorMessage: mobileMessage, validate: validateMobile } = useField<string>('mobile')
 const { value: code, errorMessage: codeMessage } = useField<boolean>('code')
 
-// const form = ref({
-//   account: '',
-//   password: '',
-//   isAgree: false,
-// })
+const mobileRef = ref<HTMLInputElement | null>(null)
+const sendCode = ref<HTMLInputElement | null>(null)
+// pause 标识暂停
+// resume 标识继续
+const { pause,resume } = useIntervalFn(() => {
+  time.value--
+  if(time.value === 0 ) return pause()
+},1000,{
+  immediate:false
+})
+const time = ref(0)
+const send = async () => {
+  if(time.value > 0 ) return
+  time.value = 5
+  resume()
+  // // 判断 如果倒计时还没有结束 就不执行下面的代码
+  // if(time.value > 0 ) return
+  // time.value = 5
+  // const timerId = setInterval(() => {
+  //   time.value--
+  //   // 如果倒是结束了就清楚倒计时
+  //   if(time.value === 0) {
+  //     clearInterval(timerId)
+  //   }
+  // },1000)
+  // const res = await validateMobile()
+  // if (!res.valid) return mobileRef.value?.focus()
+  // sendCode.value?.focus()
+  // // console.log('发送验证码');
+  // try {
+  //   await user.sendMobileMsg(mobile.value)
+  //   Message.success('已发送至手机')
+  // } catch (e:any) {
+  //   // console.dir(e);
+  //   Message.error(e.response.data.message)
+  // }
+}
+
+
 
 watch(active, () => {
   resetForm()
@@ -132,15 +160,17 @@ watch(active, () => {
         <div class="form-item">
           <div class="input">
             <i class="iconfont icon-user"></i>
-            <input v-model="mobile" type="text" placeholder="请输入手机号" />
+            <input ref="mobileRef" v-model="mobile" type="text" placeholder="请输入手机号" />
           </div>
           <div class="error"><i class="iconfont icon-warning" v-if="mobileMessage" />{{ mobileMessage }}</div>
         </div>
         <div class="form-item">
           <div class="input">
             <i class="iconfont icon-code"></i>
-            <input v-model="code" type="password" placeholder="请输入验证码" />
-            <span class="code">发送验证码</span>
+            <input ref="sendCode" v-model="code" type="password" placeholder="请输入验证码" />
+            <span class="code" @click="send">
+            {{ time === 0 ? '发送验证码' : `${time}s后发送` }}
+            </span>
           </div>
           <div class="error"><i class="iconfont icon-warning" v-if="codeMessage" />{{ codeMessage }}</div>
         </div>

@@ -11,7 +11,11 @@ export default defineStore('user', {
     async login(data: { account: string, password: string }) {
       const res = await axios.post<ApiRes<profile>>('/login', data)
       this.profile = res.data.result
+    },
+    async sendMobileMsg(mobile:string) {
+      await axios.get('/login/code',{
+        params:{mobile}
+      })
     }
-
   }
 })
