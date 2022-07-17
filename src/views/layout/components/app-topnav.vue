@@ -1,6 +1,13 @@
 <script lang="ts" setup name="AppTopnav">
 import useStore from '@/store';
+import router from '@/router'
+import { Message } from '@/components/message';
 const { user } = useStore()
+const logout = () => {
+  user.logout()
+  router.push('/login')
+  Message.success('退出成功')
+}
 </script>
 
 <template>
@@ -11,7 +18,7 @@ const { user } = useStore()
             <li>
               <a href="javascript:;"><i class="iconfont icon-user"></i>{{user.profile.nickname}}</a>
             </li>
-          <li><a href="javascript:;">退出登录</a></li>
+          <li><a href="javascript:;" @click="logout">退出登录</a></li>
         </template>
         <template v-else>
           <li><router-link to="/login">请先登录</router-link></li>

@@ -74,7 +74,7 @@ const { resetForm, validate } = useForm({
       if (!/^\d{6}$/.test(value)) return '验证码格式错误'
       return true
     }
-  }
+  },
 })
 
 
@@ -185,7 +185,9 @@ watch(active, () => {
       <a @click="login" href="javascript:;" class="btn">登录</a>
     </div>
     <div class="action">
-      <img src="https://qzonestyle.gtimg.cn/qzone/vas/opensns/res/img/Connect_logo_7.png" alt="" />
+      <a
+        href="https://graph.qq.com/oauth2.0/authorize?client_id=100556005&amp;response_type=token&amp;scope=all&amp;redirect_uri=http%3A%2F%2Fwww.corho.com%3A8080%2F%23%2Flogin%2Fcallback"><img
+          src="https://qzonestyle.gtimg.cn/qzone/vas/opensns/res/img/Connect_logo_7.png" alt="QQ登录" border="0" /></a>
       <div class="url">
         <a href="javascript:;">忘记密码</a>
         <a href="javascript:;">免费注册</a>
