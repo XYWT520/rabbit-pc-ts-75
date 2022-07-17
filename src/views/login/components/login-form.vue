@@ -4,7 +4,7 @@ import { Message } from '@/components/message';
 import useStore from '@/store'
 import { useRouter } from 'vue-router';
 import { useField, useForm } from 'vee-validate'
-import { useIntervalFn } from '@vueuse/core'; 
+import { useCountDown } from '@/utils/hooks';
 const router = useRouter()
 const { user } = useStore()
 const active = ref<'account' | 'qrcode'>('account')
@@ -24,19 +24,22 @@ const login = async () => {
   //   return
   // }
   // console.log('通过校验，可以发送请求')
+
+  // 兜底校验
   const res = await validate()
-  console.log(res);
-  if (!res.valid) return
-  try {
-    // 发送请求
+  if (active.value === 'account') {
+    if (res.errors.account || res.errors.password || res.errors.isAgree) return
     await user.login({ account: account.value, password: password.value })
-    // 消息提示
-    Message.success('登录成功')
-    // 跳转到首页
-    router.push('/')
-  } catch (e) {
-    console.log(e);
+  } else {
+    if (res.errors.mobile || res.errors.code || res.errors.isAgree) return
+    await user.mobileLogin({ mobile: mobile.value, code: code.value })
   }
+  // console.log(res);
+  if (res.valid) return
+  // 消息提示
+  Message.success('登录成功')
+  // 跳转到首页
+  router.push('/')
 }
 // validate 时兜底校验
 // resetForm 是清空表单的校验结果
@@ -82,23 +85,14 @@ const { value: account, errorMessage: accountMessage } = useField<string>('accou
 const { value: password, errorMessage: passwordMessage } = useField<string>('password')
 const { value: isAgree, errorMessage: isAgreeMessage } = useField<boolean>('isAgree')
 const { value: mobile, errorMessage: mobileMessage, validate: validateMobile } = useField<string>('mobile')
-const { value: code, errorMessage: codeMessage } = useField<boolean>('code')
+const { value: code, errorMessage: codeMessage } = useField<string>('code')
 
 const mobileRef = ref<HTMLInputElement | null>(null)
 const sendCode = ref<HTMLInputElement | null>(null)
-// pause 标识暂停
-// resume 标识继续
-const { pause,resume } = useIntervalFn(() => {
-  time.value--
-  if(time.value === 0 ) return pause()
-},1000,{
-  immediate:false
-})
-const time = ref(0)
+
+const { time, start } = useCountDown(59)
 const send = async () => {
-  if(time.value > 0 ) return
-  time.value = 5
-  resume()
+
   // // 判断 如果倒计时还没有结束 就不执行下面的代码
   // if(time.value > 0 ) return
   // time.value = 5
@@ -109,17 +103,18 @@ const send = async () => {
   //     clearInterval(timerId)
   //   }
   // },1000)
-  // const res = await validateMobile()
-  // if (!res.valid) return mobileRef.value?.focus()
-  // sendCode.value?.focus()
-  // // console.log('发送验证码');
-  // try {
-  //   await user.sendMobileMsg(mobile.value)
-  //   Message.success('已发送至手机')
-  // } catch (e:any) {
-  //   // console.dir(e);
-  //   Message.error(e.response.data.message)
-  // }
+  // 表单校验
+  const res = await validateMobile()
+  if (!res.valid) return mobileRef.value?.focus()
+  sendCode.value?.focus()
+
+  // 倒计时
+  if (time.value > 0) return
+  start()
+
+  // 发送请求
+  await user.sendMobileMsg(mobile.value)
+  Message.success('已发送至手机')
 }
 
 
@@ -169,7 +164,7 @@ watch(active, () => {
             <i class="iconfont icon-code"></i>
             <input ref="sendCode" v-model="code" type="password" placeholder="请输入验证码" />
             <span class="code" @click="send">
-            {{ time === 0 ? '发送验证码' : `${time}s后发送` }}
+              {{ time === 0 ? '发送验证码' : `${time}s后发送` }}
             </span>
           </div>
           <div class="error"><i class="iconfont icon-warning" v-if="codeMessage" />{{ codeMessage }}</div>

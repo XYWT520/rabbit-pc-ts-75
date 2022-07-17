@@ -8,6 +8,7 @@ export default defineStore('user', {
     profile: {} as profile
   }),
   actions: {
+    // 用户名和密码登录
     async login(data: { account: string, password: string }) {
       const res = await axios.post<ApiRes<profile>>('/login', data)
       this.profile = res.data.result
@@ -16,6 +17,10 @@ export default defineStore('user', {
       await axios.get('/login/code',{
         params:{mobile}
       })
-    }
+    },
+    // 短信登录
+    async mobileLogin(data: { mobile: string, code: string }) {
+      const res = await axios.post<ApiRes<profile>>('/login/code', data)
+    },
   }
 })
